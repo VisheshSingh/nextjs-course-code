@@ -16,6 +16,17 @@ async function handler(req, res) {
   }
 
   const { oldPassword, newPassword } = req.body;
+
+  if (
+    !oldPassword ||
+    !newPassword ||
+    newPassword.trim() === '' ||
+    newPassword.trim().length < 7
+  ) {
+    res.status(403).json({ message: 'Please check the passwords' });
+    return;
+  }
+
   const client = await connectToDB();
   const db = client.db();
   const userCollection = db.collection('users');
